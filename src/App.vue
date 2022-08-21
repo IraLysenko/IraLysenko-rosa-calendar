@@ -1,5 +1,5 @@
 <template>
-  <main class="booking-page">
+  <main class="booking-page container">
     <section class="booking-page__info"></section>
     <aside class="booking-page__panel">
       <BookingPanel></BookingPanel>

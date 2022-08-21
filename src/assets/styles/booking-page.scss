@@ -2,10 +2,14 @@
   display: flex;
 
   &__info {
-
+    @include media-breakpoint-up(lg) {
+      @include make-col(7);
+    }
   }
 
   &__panel {
-
+    @include media-breakpoint-up(lg) {
+      @include make-col(5);
+    }
   }
 }

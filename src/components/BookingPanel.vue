@@ -1,7 +1,7 @@
 <template>
-  <aside class="booking-panel">
+  <div class="booking-panel">
     <h2>Find availability</h2>
-  </aside>
+  </div>
 </template>
 
 <script>
