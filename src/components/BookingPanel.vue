@@ -5,6 +5,7 @@
       <div class="booking-form__section booking-form__section--visit">
           <span class="booking-form__option-title">Is this your first appointment with this practitioner?</span>
           <div class="booking-form__radio-wrapper">
+
             <div class="booking-form__input-wrap">
               <input type="radio" id="visitYes" name="visit-yes" value="Yes" v-model="selectedVisit" hidden>
               <label class="booking-form__radio-label" for="visitYes">Yes</label>
@@ -33,13 +34,24 @@
         </select>
       </div>
 
+      <OptionsSelect></OptionsSelect>
+
+      <DateTable></DateTable>
+
     </form>
   </div>
 </template>
 
 <script>
+import OptionsSelect from './OptionsSelect.vue'
+import DateTable from './DateTable.vue'
+
 export default {
   name: "BookingPanel",
+  components: {
+    OptionsSelect,
+    DateTable
+  },
   data() {
     return {
       visit: [

@@ -1,6 +1,7 @@
 .booking-form {
   &__section {
     margin-bottom: rem(32px);
+    padding: 0 rem(32px);
   }
 
   &__option-title {
@@ -101,5 +102,6 @@
   &__select {
     width: 100%;
     padding: rem(8px) rem(16px);
+    height: rem(40px);
   }
 }

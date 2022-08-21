@@ -1,0 +1,72 @@
+.date-picker {
+  &__row {
+    display: flex;
+    height: rem(40.5px);
+
+    &--header {
+      height: rem(55px);
+      border-top: 1px solid #efeceb;
+      border-bottom: 1px solid #efeceb;
+    }
+  }
+
+  &__cell {
+    @include centering;
+    flex-direction: column;
+    width: rem(65px);
+    height: 100%;
+  }
+
+  &__day {
+    font-size: rem(9px);
+    color: #9c727d;
+    line-height: rem(11px);
+  }
+
+  &__date {
+    font-size: rem(12px);
+    color: #5a4d49;
+  }
+
+  &__time {
+    padding: rem(4px);
+    font-size: rem(12px);
+    
+    &-span {
+      background: #f3effb;
+      border: 1px solid transparent;
+      color: #371c69;
+      border-radius: rem(4px);
+      cursor: pointer;
+      padding: rem(5px);
+      width: 100%;
+      height: 100%;
+      @include centering;
+
+      &:hover {
+        border: 1px solid #b39cdd;
+        transition: $transition;
+      }
+    }
+
+    &-empty {
+      height: 1px;
+      width: 16px;
+      background: #bd969e;
+    }
+  }
+
+  &__nav {
+    width: rem(56px);
+    @include centering;
+
+    & .arrow-icon {
+      width: 100%;
+      height: inherit;
+    }
+
+    &--empty {
+      width: rem(56px);
+    }
+  }
+}
