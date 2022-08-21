@@ -1,26 +1,22 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <main class="booking-page">
+    <section class="booking-page__info"></section>
+    <aside class="booking-page__panel">
+      <BookingPanel></BookingPanel>
+    </aside>
+  </main>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import BookingPanel from './components/BookingPanel.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    BookingPanel
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
