@@ -1,0 +1,12 @@
+.booking-panel {
+  background: #ffffff;
+  border: 1px solid #eae1e3;
+  box-sizing: border-box;
+  box-shadow: 0 12px 41px #54354207, 0 2.68036px 9.15789px #5435420b, 0 0.798012px 2.72654px #54354212;
+  border-radius: 8px;
+  
+  @include media-breakpoint-up(lg) {
+    position: sticky;
+    padding: rem(32px);
+  }
+}

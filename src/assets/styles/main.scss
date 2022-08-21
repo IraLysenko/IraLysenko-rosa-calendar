@@ -1,5 +1,7 @@
 @import "bootstrap-4-grid/scss/grid.scss";
+@import "reset.scss";
 @import "common.scss";
 
-@import "booking-page";
+@import "booking-page.scss";
 @import "booking-panel.scss";
+@import "booking-form.scss";

@@ -1,9 +1,13 @@
 <template>
-  <main class="booking-page container">
-    <section class="booking-page__info"></section>
-    <aside class="booking-page__panel">
-      <BookingPanel></BookingPanel>
-    </aside>
+  <main class="booking-page">
+    <div class="booking-page__container container">
+      <section class="booking-page__info">
+        Doctor info
+      </section>
+      <aside class="booking-page__panel">
+        <BookingPanel></BookingPanel>
+      </aside>
+    </div>
   </main>
 </template>
 

@@ -1,5 +1,18 @@
 .booking-page {
-  display: flex;
+  background: var(--theme-color) url("../img/bg-homepage-patient-booking.svg") no-repeat left top;
+  background-size: cover;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+
+  &__container {
+    display: flex;
+
+    @include media-breakpoint-up(xl) {
+      min-width: 1400px;
+      padding: rem(60px) 0;
+    }
+  }
 
   &__info {
     @include media-breakpoint-up(lg) {
