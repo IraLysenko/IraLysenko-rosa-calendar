@@ -2,7 +2,6 @@
   <main class="booking-page">
     <div class="booking-page__container container">
       <section class="booking-page__info">
-        Doctor info
       </section>
       <aside class="booking-page__panel">
         <BookingPanel></BookingPanel>

@@ -1,0 +1,55 @@
+{
+  "apiBase": "https://staging-api.rosa.be/api/availabilities",
+  "booking_panel_title" : "Find availability",
+  "is_new_patient_title" : "Is this your first appointment with this practitioner?",
+  "patient_motive_title" : "What is the reason for your visit?",
+  "chose_location_title" : "Select a location and an available time",
+  "submit_button_text" : "Book Appointment",
+
+  "visit": [
+    {
+      "id": 1,
+      "is_new_patient": true,
+      "title": "Yes"
+    },
+    {
+      "id": 2,
+      "is_new_patient": false,
+      "title": "No"
+    }
+  ],
+
+  "motives": [
+    {
+      "id": "6256d44ed30d2d5a1f2f3c5a",
+      "title": "Business Meeting"
+    },
+    {
+      "id": "61eea367ddf6c500149ae2cc",
+      "title": "Cultural fit"
+    },
+    {
+      "id": "61379ba159d4940022b6c929",
+      "title": "Introduction call"
+    },
+    {
+      "id": "61eea350ddf6c500149ae2cb",
+      "title": "Technical assessment"
+    }
+  ],
+
+  "locations": [
+    {
+      "id": "61379ba159d4940022b6c928",
+      "title": "Mon cabinet, Cantersteen 10, 1000 Brussels"
+    },
+    {
+      "id": "629a09a60484b42000c11420",
+      "title": "Home Sweet Home, Avenue Pere Hilaire 21, 1150 Brussels"
+    },
+    {
+      "id": "629a0a4c85c84e74236f0ee4",
+      "title": "Arbalethe, Place Royale 1, 1000 Brussels"
+    }
+  ]
+}

@@ -28,6 +28,7 @@ $transition: all 0.3s ease-in-out;
 body {
   font-family: 'Roboto', sans-serif;
   color: var(--theme-color-black);
+  font-size: $body-font-size;
 }
 
 h1, h2, h3 {
