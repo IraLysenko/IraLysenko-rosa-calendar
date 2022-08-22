@@ -3,6 +3,7 @@
   "booking_panel_title" : "Find availability",
   "is_new_patient_title" : "Is this your first appointment with this practitioner?",
   "patient_motive_title" : "What is the reason for your visit?",
+  "patient_motive_button" : "Select a motive",
   "chose_location_title" : "Select a location and an available time",
   "submit_button_text" : "Book Appointment",
 
