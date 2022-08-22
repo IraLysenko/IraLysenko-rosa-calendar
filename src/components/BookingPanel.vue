@@ -4,33 +4,41 @@
     <form class="booking-form" @submit.prevent="handleSubmit">
       <div class="booking-form__section booking-form__section--visit">
           <span class="booking-form__option-title">{{ this.fields.is_new_patient_title }}</span>
-          <div class="booking-form__radio-wrapper">
+
+        <div class="booking-form__radio-wrapper">
             <div class="booking-form__input-wrap"
                  v-for="(input, index) in this.fields.visit"
                  :key="index" >
-              <input type="radio" :id="'radioVisit' + input.id" name="radioVisit" :value="input.is_new_patient" v-model="firstVisit" hidden>
+              <input type="radio"
+                     :id="'radioVisit' + input.id"
+                     name="radioVisit"
+                     :value="input.is_new_patient"
+                     v-model="firstVisit" hidden>
               <label class="booking-form__radio-label" :for="'radioVisit' + input.id">{{ input.title }}</label>
             </div>
           </div>
+
       </div>
 
       <div class="booking-form__section booking-form__section--reason">
         <span class="booking-form__option-title">{{ this.fields.patient_motive_title }}</span>
-        <select class="booking-form__select" name="reason" id="" v-model="selectedReason">
-          <option value="1">1</option>
-          <option value="2">2</option>
-        </select>
+        <CustomSelect
+            :title = this.fields.patient_motive_button
+            :options = this.fields.motives
+            name = "motive"
+            v-model="this.selectedReason">
+        </CustomSelect>
       </div>
 
-      <div class="booking-form__section booking-form__section--location">
+      <div class="booking-form__section booking-form__section--reason">
         <span class="booking-form__option-title">{{ this.fields.chose_location_title }}</span>
-        <select class="booking-form__select" name="location" id="" v-model="selectedLocation">
-          <option value="1">1</option>
-          <option value="2">2</option>
-        </select>
+        <CustomSelect
+            :title = this.fields.locations[0].title
+            :options = this.fields.locations
+            name = "location"
+            v-model="this.selectedLocation">
+        </CustomSelect>
       </div>
-
-      <OptionsSelect></OptionsSelect>
 
       <DateTable></DateTable>
 
@@ -45,29 +53,25 @@
 </template>
 
 <script>
-import OptionsSelect from './OptionsSelect.vue'
+import CustomSelect from './CustomSelect.vue'
 import DateTable from './DateTable.vue'
 import fields from '../../data/db.json'
 
 export default {
   name: "BookingPanel",
   components: {
-    OptionsSelect,
+    CustomSelect,
     DateTable
   },
   data() {
     return {
-      visit: [],
-      reasons: [],
-      locations: [],
-      dates: [],
       firstVisit: '',
-      selectedReason: '1',
-      selectedLocation: '1',
+      selectedReason: '',
+      selectedLocation: '',
       selectedDate: '',
       fields: fields,
       apiBaseUrl: 'https://staging-api.rosa.be/api/availabilities?',
-      dynamicData: [],
+      timeData: [],
     }
   },
   methods: {
@@ -83,25 +87,26 @@ export default {
           console.log('bad')
         }
       }).then(data => {
-        this.visit = data;
+        this.timeData = data;
       });
     },
   },
   computed: {
-    // dynamicApiUrl() {
-    //   let queryParameters = [
-    //     `motive_id=${this.firstVisit}`,
-    //     `is_new_patient=${this.selectedReason}`,
-    //     `calendar_ids=${this.selectedLocation}`,
-    //     ];
-    //
-    //
-    //   let url = this.apiBaseUrl + queryParameters.join('&');
-    //   return url;
-    // },
+    dynamicApiUrl() {
+      let queryParameters = [
+        `from=2022-08-21T22:00:00.000Z`,
+        `to=2022-08-28T21:59:59.999Z`,
+        `motive_id=${this.selectedReason}`,
+        `is_new_patient=${this.firstVisit}`,
+        `calendar_ids=${this.selectedLocation}`,
+        ];
+
+      let url = this.apiBaseUrl + queryParameters.join('&');
+      return url;
+    },
   },
   mounted() {
-    //this.getData();
-  }
+    this.getData();
+  },
 }
 </script>
