@@ -8,6 +8,10 @@
       border-top: 1px solid #efeceb;
       border-bottom: 1px solid #efeceb;
     }
+
+    &:nth-last-child(1) {
+      border-bottom: 1px solid #efeceb;
+    }
   }
 
   &__cell {
