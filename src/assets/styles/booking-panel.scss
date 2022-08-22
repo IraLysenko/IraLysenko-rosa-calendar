@@ -7,7 +7,7 @@
   
   @include media-breakpoint-up(lg) {
     position: sticky;
-    padding: rem(32px) 0;
+    padding: rem(32px) 0 rem(16px);
   }
 
   &__title {

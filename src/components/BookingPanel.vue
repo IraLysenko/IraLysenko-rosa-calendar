@@ -38,6 +38,12 @@
 
       <DateTable></DateTable>
 
+      <div class="booking-form__submit">
+        <button class="booking-form__button button button--primary">
+          <span>Book Appointment</span>
+          <i class="button__icon button__icon--right-array"></i>
+        </button>
+      </div>
     </form>
   </div>
 </template>
