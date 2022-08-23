@@ -42,10 +42,9 @@
 
 <script>
 export default {
-  name: "DateTable"
+  name: "DateTable",
+  props: {
+    timeData: Object
+  },
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -40,7 +40,9 @@
         </CustomSelect>
       </div>
 
-      <DateTable></DateTable>
+      <DateTable
+          :time-data = this.timeData>
+      </DateTable>
 
       <div class="booking-form__submit">
         <button class="booking-form__button button button--primary">
@@ -56,6 +58,7 @@
 import CustomSelect from './CustomSelect.vue'
 import DateTable from './DateTable.vue'
 import fields from '../../data/db.json'
+import moment from 'moment'
 
 export default {
   name: "BookingPanel",
@@ -70,7 +73,7 @@ export default {
       selectedLocation: '',
       selectedDate: '',
       fields: fields,
-      apiBaseUrl: 'https://staging-api.rosa.be/api/availabilities?',
+      apiBaseUrl: fields.apiBase +'?',
       timeData: [],
     }
   },
@@ -79,7 +82,7 @@ export default {
       console.log('submit');
     },
     getData(){
-      return fetch(this.dynamicApiUrl).then(res => {
+      let getData = fetch(this.dynamicApiUrl).then(res => {
         if (res.ok) {
           console.log('ok')
           return res.json()
@@ -89,24 +92,37 @@ export default {
       }).then(data => {
         this.timeData = data;
       });
+
+      return getData;
     },
   },
   computed: {
     dynamicApiUrl() {
+      let currentDate = moment().format("Y-MM-D"),
+          endDate = moment(currentDate).add(8, 'days').format("Y-MM-D");
+
       let queryParameters = [
-        `from=2022-08-21T22:00:00.000Z`,
-        `to=2022-08-28T21:59:59.999Z`,
+        `from=${currentDate + fields.time_from}`,
+        `to=${endDate + fields.time_to}`,
         `motive_id=${this.selectedReason}`,
         `is_new_patient=${this.firstVisit}`,
         `calendar_ids=${this.selectedLocation}`,
         ];
-
       let url = this.apiBaseUrl + queryParameters.join('&');
       return url;
     },
   },
   mounted() {
-    this.getData();
+    if(this.firstVisit && this.selectedReason && this.selectedLocation) {
+      this.getData();
+    }
+  },
+  watch: {
+    dynamicApiUrl(newValue){
+      if(this.firstVisit && this.selectedReason && this.selectedLocation){
+        this.getData(newValue);
+      }
+    }
   },
 }
 </script>
