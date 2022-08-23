@@ -11,6 +11,7 @@
     "bootstrap-4-grid": "^3.4.0",
     "core-js": "^3.8.3",
     "json-server": "^0.17.0",
+    "moment": "^2.29.4",
     "vue": "^3.2.13"
   },
   "devDependencies": {
