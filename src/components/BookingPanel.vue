@@ -41,13 +41,15 @@
       </div>
 
       <DateTable
-          :time-data = this.timeData>
+          :time-data = this.timeData
+          :visible-days = fields.data_picker_days_amount
+      >
       </DateTable>
 
       <div class="booking-form__submit">
         <button class="booking-form__button button button--primary">
           <span>{{ this.fields.submit_button_text }}</span>
-          <span class="button__icon button__icon--right-array">+</span>
+          <span class="button__icon button__icon--right-array"> +</span>
         </button>
       </div>
     </form>
@@ -84,22 +86,18 @@ export default {
     getData(){
       let getData = fetch(this.dynamicApiUrl).then(res => {
         if (res.ok) {
-          console.log('ok')
           return res.json()
-        } else {
-          console.log('bad')
         }
       }).then(data => {
         this.timeData = data;
       });
-
       return getData;
     },
   },
   computed: {
     dynamicApiUrl() {
       let currentDate = moment().format("Y-MM-D"),
-          endDate = moment(currentDate).add(8, 'days').format("Y-MM-D");
+          endDate = moment(currentDate).add(fields.data_picker_days_amount, 'days').format("Y-MM-D");
 
       let queryParameters = [
         `from=${currentDate + fields.time_from}`,
@@ -108,6 +106,7 @@ export default {
         `is_new_patient=${this.firstVisit}`,
         `calendar_ids=${this.selectedLocation}`,
         ];
+
       let url = this.apiBaseUrl + queryParameters.join('&');
       return url;
     },
