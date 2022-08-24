@@ -1,13 +1,10 @@
 {
-  "apiBase": "https://staging-api.rosa.be/api/availabilities",
   "booking_panel_title" : "Find availability",
   "is_new_patient_title" : "Is this your first appointment with this practitioner?",
   "patient_motive_title" : "What is the reason for your visit?",
   "patient_motive_button" : "Select a motive",
   "chose_location_title" : "Select a location and an available time",
   "submit_button_text" : "Book Appointment",
-  "time_from" : "T22:00:00.000Z",
-  "time_to" : "T21:59:59.999Z",
   "data_picker_days_amount" : "8",
 
   "visit": [
