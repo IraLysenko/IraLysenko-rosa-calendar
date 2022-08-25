@@ -26,14 +26,14 @@
       <td class="date-picker__cell date-picker__time"
           v-for="(day, cellIndex) in this.dataPickerArr" :key="cellIndex">
         <span class="date-picker__time-span">
-<!--          {{ day.startTime? timeCounter(day.startTime, day.endTime, rowIndex) : "-&#45;&#45;"}}-->
-          {{ day.startTime}}
+          {{ day.startTime? timeCounter(day.startTime, day.duration, rowIndex) : "---"}}
+
         </span>
       </td>
 
-      <td class="date-picker__cell date-picker__time date-picker__time--empty" >
-        <span class="date-picker__time-empty"></span>
-      </td>
+<!--      <td class="date-picker__cell date-picker__time date-picker__time&#45;&#45;empty" >-->
+<!--        <span class="date-picker__time-empty"></span>-->
+<!--      </td>-->
 
       <td class="date-picker__nav date-picker__nav--empty"></td>
     </tr>
@@ -72,15 +72,15 @@ export default {
       const currentDate = moment(this.startDate);
       const endDate = moment(currentDate).add(6, 'days');
 
-      console.debug(this.availabilities);
+      console.debug(currentDate);
 
       for (let date = currentDate; date <= endDate; date.add(1, 'days')) {
         const dayData = this.availabilities ? this.availabilities.find(day => {
-          console.debug(date);
-          console.debug(day.startAt);
-          console.debug(day.endAt);
-          console.debug(moment(date).isBetween(day.startAt, day.endAt, 'day'));
-          return moment(date).isBetween(day.startAt, day.endAt);
+          // console.debug(date);
+          // console.debug(day.startAt);
+          // console.debug(day.endAt);
+          // console.debug(moment(date).isBetween(day.startAt, day.endAt, 'day'));
+          return moment(date).isBetween(moment(day.startAt).subtract(1, 'days'), day.endAt);
         }) : {};
 
         const dayObj = {
@@ -91,18 +91,21 @@ export default {
           startTime: dayData?.startAt,
           endTime: dayData?.endAt,
           duration: dayData?.duration,
+          motiveId: dayData?.motiveIds
         }
         datePickerData.push(dayObj);
       }
-
       return datePickerData
     },
   },
 
   methods: {
-    timeCounter(startTime, endTime, rowIndex) {
-      console.log(startTime, endTime, rowIndex)
-      return ''
+    timeCounter(startTime, duration, rowIndex) {
+      console.log(startTime, duration, rowIndex);
+      let index = 15 * rowIndex;
+      if(index <= duration) {
+        return moment(startTime).add(index, 'minutes').format('HH:mm');
+      }
     }
   },
 }

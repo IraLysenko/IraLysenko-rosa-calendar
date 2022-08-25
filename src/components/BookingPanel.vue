@@ -20,7 +20,7 @@
 
       </div>
 
-      <div class="booking-form__section booking-form__section--reason">
+      <div class="booking-form__section booking-form__section--reason" v-if="firstVisit">
         <span class="booking-form__option-title">{{ this.fields.patient_motive_title }}</span>
         <CustomSelect
             :title = this.fields.patient_motive_button
@@ -30,7 +30,7 @@
         </CustomSelect>
       </div>
 
-      <div class="booking-form__section booking-form__section--reason">
+      <div class="booking-form__section booking-form__section--location">
         <span class="booking-form__option-title">{{ this.fields.chose_location_title }}</span>
         <CustomSelect
             :title = this.fields.locations[0].title
@@ -79,7 +79,6 @@ export default {
       selectedLocation: '',
       selectedDate: '',
       fields: fields,
-      apiBaseUrl: fields.apiBase +'?',
       availabilities: [],
       startDate: moment(),
       nextAvailableDate : '',
@@ -89,8 +88,8 @@ export default {
   },
   computed: {
     queryParams: vm => {
-      const currentDate = vm.startDate.toISOString();
-      const endDate = moment(currentDate).add(fields.data_picker_days_amount, 'days').toISOString();
+      const currentDate = moment(vm.startDate).startOf('day').toISOString();
+      const endDate = moment(currentDate).add(fields.data_picker_days_amount, 'days').endOf('day').toISOString();
 
       return ({
         from: currentDate,
@@ -113,6 +112,7 @@ export default {
       alert(this.selectedTime);
       console.log('submit');
     },
+
     async getData() {
       /**
        * @type {{startAt: string, endAt: string, duration: string, motiveIds: string[], calendarId: string }[]}
@@ -134,7 +134,7 @@ export default {
     },
 
     goToNextWeek() {
-      this.startDate = moment(this.nextAvailableDate);
+      this.startDate = this.nextAvailableDate;
       this.nextAvailableDate = null;
     },
   },
