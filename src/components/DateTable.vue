@@ -56,7 +56,8 @@ export default {
     availabilities: Array,
     startDate: [String],
     visibleDays: String,
-    nextAvailableDate: String
+    nextAvailableDate: String,
+    meetingDuration: String,
   },
   data() {
     return {
@@ -68,7 +69,6 @@ export default {
 
     dataPickerArr() {
       const datePickerData = [];
-
       const currentDate = moment(this.startDate);
       const endDate = moment(currentDate).add(6, 'days');
 
@@ -102,7 +102,7 @@ export default {
   methods: {
     timeCounter(startTime, duration, rowIndex) {
       console.log(startTime, duration, rowIndex);
-      let index = 15 * rowIndex;
+      let index = this.meetingDuration * rowIndex;
       if(index <= duration) {
         return moment(startTime).add(index, 'minutes').format('HH:mm');
       }

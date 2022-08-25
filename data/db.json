@@ -23,19 +23,23 @@
   "motives": [
     {
       "id": "6256d44ed30d2d5a1f2f3c5a",
-      "title": "Business Meeting"
+      "title": "Business Meeting",
+      "meeting_duration": "15"
     },
     {
       "id": "61eea367ddf6c500149ae2cc",
-      "title": "Cultural fit"
+      "title": "Cultural fit",
+      "meeting_duration": "30"
     },
     {
       "id": "61379ba159d4940022b6c929",
-      "title": "Introduction call"
+      "title": "Introduction call",
+      "meeting_duration": "30"
     },
     {
       "id": "61eea350ddf6c500149ae2cb",
-      "title": "Technical assessment"
+      "title": "Technical assessment",
+      "meeting_duration": "75"
     }
   ],
 

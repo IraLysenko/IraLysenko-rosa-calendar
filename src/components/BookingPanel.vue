@@ -45,6 +45,7 @@
           :start-date = "startDate"
           :visible-days = "fields.data_picker_days_amount"
           :next-available-date="nextAvailableDate"
+          :meeting-duration="meetingDuration"
           @to-next-week="goToNextWeek"
       >
       </DateTable>
@@ -98,6 +99,15 @@ export default {
         is_new_patient: vm.firstVisit,
         calendar_ids: vm.selectedLocation,
       });
+    },
+
+    meetingDuration() {
+      if(!this.selectedReason) {
+        return '';
+      } else {
+        let currentMotiveObj = this.fields.motives.find(motive => motive.id === this.selectedReason );
+        return currentMotiveObj.meeting_duration;
+      }
     },
   },
   watch: {
