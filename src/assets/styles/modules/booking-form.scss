@@ -6,6 +6,10 @@
     &--select {
       position: relative;
     }
+
+    &--centered {
+      @include centering;
+    }
   }
 
   &__option-title {
@@ -104,9 +108,9 @@
   }
 
   &__date-picker {
-    @include media-breakpoint-up(lg) {
-      margin-bottom: rem(40px);
-    }
+    //@include media-breakpoint-up(lg) {
+    //  margin-bottom: rem(40px);
+    //}
   }
 
   &__submit {
@@ -115,6 +119,7 @@
 
   &__button {
     @include centering;
+    align-items: baseline;
     width: 100%;
   }
 }

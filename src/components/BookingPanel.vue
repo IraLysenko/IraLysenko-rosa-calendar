@@ -61,8 +61,9 @@
         <button type="submit"
                 class="booking-form__button button button--primary">
           <span>{{ this.fields.submit_button_text }}</span>
-          <span class="button__icon button__icon--right-array"> +</span>
+          <i class="button__icon button__icon--right-array fa fa-arrow-right"></i>
         </button>
+
       </div>
     </form>
   </div>
@@ -74,12 +75,23 @@ import DateTable from './DateTable.vue'
 import fields from '../../data/db.json'
 import moment from 'moment'
 import axiosInstance from "@/utils/http-client";
+/* import the fontawesome core */
+//import library  from '@fortawesome/fontawesome-svg-core'
+/* import font awesome icon component */
+//import  FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+//import faChevronDown from '@fortawesome/free-solid-svg-icons'
+/* import specific icons */
+//import  faUserSecret  from '@fortawesome/free-solid-svg-icons'
+
 
 export default {
   name: "BookingPanel",
   components: {
     CustomSelect,
-    DateTable
+    DateTable,
+    //library,
+    //FontAwesomeIcon,
+    //faUserSecret
   },
   data() {
     return {
@@ -162,7 +174,7 @@ export default {
     },
 
     goToPrevAvailabilities(){
-      console.debug("preeev")
+      console.debug("preeev");
     }
   },
 

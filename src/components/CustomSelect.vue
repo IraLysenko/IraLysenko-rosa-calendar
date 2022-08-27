@@ -2,7 +2,7 @@
   <button type="button"
           class="booking-form__select-button custom-select"
           :class="{'custom-select--disabled' : disabled === true }"
-          @click.stop="showDropdown()"
+          @click.self="showDropdown()"
           :disabled="disabled === true">
     {{ selectTitle }}
 

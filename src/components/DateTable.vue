@@ -2,9 +2,13 @@
 
   <table class="booking-form__date-picker date-picker" >
     <tr class="date-picker__row date-picker__row--header">
-      <th class="date-picker__nav date-picker__nav--left">
-        <button type="button" @click="$emit('to-prev-availabilities')">
-          <span class="arrow-icon">+</span>
+      <th class="date-picker__nav date-picker__nav--left date-picker__cell date-picker__cell--nav">
+        <button type="button"
+                class="button button--nav-left"
+                @click="$emit('to-prev-availabilities')">
+          <span class="button__icon button__icon--left">
+            <i class="fa-solid fa-angle-left"></i>
+          </span>
         </button>
       </th>
 
@@ -19,7 +23,9 @@
 
       <th class="date-picker__nav date-picker__nav--right">
         <button type="button" @click="$emit('to-next-availabilities')">
-          <span class="arrow-icon">+</span>
+          <span class="button__icon button__icon--left">
+            <i class="fa-solid fa-angle-right"></i>
+          </span>
         </button>
       </th>
     </tr>
@@ -31,34 +37,40 @@
           v-for="(day, cellIndex) in this.dataPickerArr"
           :key="cellIndex"
           :class="{'date-picker__time--empty' : !day.data.length }">
+
         <span class="date-picker__time-span" v-if="day.data.length">
-          <input type="radio" name="time" :id="day.dateFull+'_'+rowIndex">
-            <label :for="day.dateFull+'_'+rowIndex">
-              {{ timeCounter(day.data, rowIndex) }}
-              {{rowIndex}}
-            </label>
+          <input class="date-picker__input"
+                  type="radio"
+                  name="time"
+                  :id="day.dateFull+'_'+rowIndex"
+                  hidden >
+          <label :for="day.dateFull+'_'+rowIndex">
+            {{ timeCounter(day.data, rowIndex) }}
+            {{ rowIndex }}
+          </label>
         </span>
+
         <span class="date-picker__time-empty" v-else></span>
 
       </td>
 
       <td class="date-picker__nav date-picker__nav--empty"></td>
     </tr>
-  </table>
 
-  <button
-      type="button"
-      class="button button--next-data"
-      v-if="nextAvailableDate"
-      @click="$emit('to-next-week')">
-    Next available date {{ formattedNextAvailableDate }}
-  </button>
-
-  <div class="booking-form__section">
     <button
         type="button"
-        class="data-picker__show-more button button--primary"
-        v-if="availabilities.length"
+        class="date-picker__no-availabilities button button--no-availabilities"
+        v-if="!nextAvailableDate"
+        @click="$emit('to-next-week')">
+      <i class="button--no-availabilities__icon fa fa-calendar-times"></i>
+      <span>Next available date {{ formattedNextAvailableDate }}</span>
+    </button>
+  </table>
+
+  <div class="booking-form__section booking-form__section--centered">
+    <button
+        type="button"
+        class="data-picker__show-more button button--show-more"
         @click="showMoreTime()">
       Show more availabilities
     </button>

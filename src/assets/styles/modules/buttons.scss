@@ -3,10 +3,45 @@
   cursor: pointer;
   border-radius: rem(4px);
 
+
+  &__icon {
+    font-size: rem(16px);
+    @include centering;
+
+    &--right-array {
+      margin-left: rem(8px);
+    }
+  }
+
   &--primary {
     background-color: var(--theme-color-brand);
     color: #fff;
     font-size: rem(20px);
     padding: rem(8px) rem(16px);
+  }
+
+  &--show-more {
+    padding: rem(8px);
+    color: #7f5bc2;
+    font-weight: 700;
+    text-align: center;
+    font-size: rem(12px);
+  }
+
+  &--no-availabilities {
+    color: #1b3c5e;
+    font-weight: 500;
+    align-items: center;
+    font-size: rem(12px);
+    display: flex;
+    padding: rem(24px);
+    justify-content: space-between;
+    background: #fefcfa;
+    border-radius: rem(4px);
+    box-shadow: 0 12px 41px #54354207, 0 2.68036px 9.15789px #5435420b, 0 0.798012px 2.72654px #54354212;
+
+    &__icon {
+      margin-right: rem(8px);
+    }
   }
 }
