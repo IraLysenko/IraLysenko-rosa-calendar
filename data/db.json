@@ -5,7 +5,8 @@
   "patient_motive_button" : "Select a motive",
   "chose_location_title" : "Select a location and an available time",
   "submit_button_text" : "Book Appointment",
-  "data_picker_days_amount" : "7",
+  "select_motive_title" : "Select a motive",
+  "data_picker_days_amount" : "8",
 
   "visit": [
     {

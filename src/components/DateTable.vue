@@ -3,7 +3,9 @@
   <table class="booking-form__date-picker date-picker" >
     <tr class="date-picker__row date-picker__row--header">
       <th class="date-picker__nav date-picker__nav--left">
-        <span class="arrow-icon">+</span>
+        <button type="button" @click="$emit('to-prev-availabilities')">
+          <span class="arrow-icon">+</span>
+        </button>
       </th>
 
       <th class="date-picker__cell date-picker__cell--heading"
@@ -16,7 +18,9 @@
       </th>
 
       <th class="date-picker__nav date-picker__nav--right">
-        <span class="arrow-icon">+</span>
+        <button type="button" @click="$emit('to-next-availabilities')">
+          <span class="arrow-icon">+</span>
+        </button>
       </th>
     </tr>
 
@@ -24,26 +28,41 @@
       <td class="date-picker__nav date-picker__nav--empty"></td>
 
       <td class="date-picker__cell date-picker__time"
-          v-for="(day, cellIndex) in this.dataPickerArr" :key="cellIndex">
-        <span class="date-picker__time-span">
-          {{ day.startTime? timeCounter(day.startTime, day.duration, rowIndex) : "---"}}
-
+          v-for="(day, cellIndex) in this.dataPickerArr"
+          :key="cellIndex"
+          :class="{'date-picker__time--empty' : !day.data.length }">
+        <span class="date-picker__time-span" v-if="day.data.length">
+          <input type="radio" name="time" :id="day.dateFull+'_'+rowIndex">
+            <label :for="day.dateFull+'_'+rowIndex">
+              {{ timeCounter(day.data, rowIndex) }}
+              {{rowIndex}}
+            </label>
         </span>
-      </td>
+        <span class="date-picker__time-empty" v-else></span>
 
-<!--      <td class="date-picker__cell date-picker__time date-picker__time&#45;&#45;empty" >-->
-<!--        <span class="date-picker__time-empty"></span>-->
-<!--      </td>-->
+      </td>
 
       <td class="date-picker__nav date-picker__nav--empty"></td>
     </tr>
   </table>
 
-  <button type="button" class="button button--next-data" v-if="nextAvailableDate" @click="$emit('to-next-week')">
+  <button
+      type="button"
+      class="button button--next-data"
+      v-if="nextAvailableDate"
+      @click="$emit('to-next-week')">
     Next available date {{ formattedNextAvailableDate }}
   </button>
 
-  <!--  <button class="data-picker__show-more">Show more availabilities</button>-->
+  <div class="booking-form__section">
+    <button
+        type="button"
+        class="data-picker__show-more button button--primary"
+        v-if="availabilities.length"
+        @click="showMoreTime()">
+      Show more availabilities
+    </button>
+  </div>
 </template>
 
 <script>
@@ -51,47 +70,46 @@ import moment from "moment/moment";
 
 export default {
   name: "DateTable",
-  emits: ['toNextWeek'],
+  emits: ['toNextWeek', 'toNextAvailabilities', 'toPrevAvailabilities'],
   props: {
     availabilities: Array,
-    startDate: [String],
+    startDate: Object,
     visibleDays: String,
     nextAvailableDate: String,
-    meetingDuration: String,
+    meetingDuration: String
   },
   data() {
     return {
-      rowsDefault: 3,
+      rowsDefault: 10,
     }
   },
   computed: {
     formattedNextAvailableDate: vm => vm.nextAvailableDate && moment(vm.nextAvailableDate).format('MMM DD'),
 
-    dataPickerArr() {
+    dataPickerArr: function () {
       const datePickerData = [];
       const currentDate = moment(this.startDate);
-      const endDate = moment(currentDate).add(6, 'days');
+      const endDate = moment(currentDate).add(7, 'days');
 
-      console.debug(currentDate);
+      for (let calendarDate = currentDate; calendarDate <= endDate; calendarDate.add(1, 'days')) {
+        const availabilitiesDayData = this.availabilities.length ?
+            this.availabilities.filter(function (availabilitiesDay) {
+              const availabilitiesDayDate = moment(availabilitiesDay.startAt).format('Y-MM-DD');
+              const calendarDayDate = moment(calendarDate).format('Y-MM-DD');
+              return availabilitiesDayDate === calendarDayDate;
+            }) : {};
 
-      for (let date = currentDate; date <= endDate; date.add(1, 'days')) {
-        const dayData = this.availabilities ? this.availabilities.find(day => {
-          // console.debug(date);
-          // console.debug(day.startAt);
-          // console.debug(day.endAt);
-          // console.debug(moment(date).isBetween(day.startAt, day.endAt, 'day'));
-          return moment(date).isBetween(moment(day.startAt).subtract(1, 'days'), day.endAt);
-        }) : {};
+        //console.debug(dayData);
 
         const dayObj = {
-          dateFull: date.format('Y-MM-D'),
-          weekday: date.format('ddd'),
-          month: date.format('MMM'),
-          number: date.format('D'),
-          startTime: dayData?.startAt,
-          endTime: dayData?.endAt,
-          duration: dayData?.duration,
-          motiveId: dayData?.motiveIds
+          dateFull: calendarDate.format('Y-MM-DD'),
+          weekday: calendarDate.format('ddd'),
+          month: calendarDate.format('MMM'),
+          number: calendarDate.format('D'),
+          endTime: 'dayData?.endAt',
+          duration: 'dayData?.duration ? dayData.duration : 0',
+          motiveId: 'dayData?.motiveIds',
+          data: availabilitiesDayData,
         }
         datePickerData.push(dayObj);
       }
@@ -100,13 +118,28 @@ export default {
   },
 
   methods: {
-    timeCounter(startTime, duration, rowIndex) {
-      console.log(startTime, duration, rowIndex);
-      let index = this.meetingDuration * rowIndex;
-      if(index <= duration) {
-        return moment(startTime).add(index, 'minutes').format('HH:mm');
+    timeCounter: function (data, rowIndex) {
+      // console.log(data, rowIndex);
+      console.log('DATA LENGTH' + data.length);
+
+      let time = data.forEach( (partOfDay) => {
+        let rowsAmount = partOfDay.duration/ this.meetingDuration;
+        if (rowIndex < rowsAmount) {
+          let minutesToAdd = this.meetingDuration * rowIndex;
+          return moment(partOfDay.startAt).add(minutesToAdd, 'minutes').format('HH:mm');
+        }
+      });
+
+      return time;
+    },
+
+    showMoreTime(){
+      if (this.availabilities.length) {
+        let durations = this.dataPickerArr.map( day => day.duration);
+        let maxDuration = Math.max(...durations);
+        this.rowsDefault = maxDuration/this.meetingDuration
       }
-    }
+    },
   },
 }
 </script>
