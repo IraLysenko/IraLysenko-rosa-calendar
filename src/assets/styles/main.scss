@@ -1,8 +1,12 @@
 @import "bootstrap-4-grid/scss/grid.scss";
 @import "reset.scss";
 @import "common.scss";
+@import "animations";
 
-@import "booking-page.scss";
-@import "booking-panel.scss";
-@import "booking-form.scss";
-@import "date-picker.scss";
+@import "layouts/booking-page.scss";
+@import "layouts/booking-panel.scss";
+
+@import "modules/booking-form.scss";
+@import "modules/date-picker.scss";
+@import "modules/buttons.scss";
+@import "modules/custom-select.scss";

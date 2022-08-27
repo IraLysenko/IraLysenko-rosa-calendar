@@ -13,28 +13,33 @@
                    :id="'radioVisit' + input.id"
                    name="radioVisit"
                    :value="input.is_new_patient"
-                   v-model="firstVisit" hidden>
+                   v-model="this.firstVisit"
+                   hidden>
             <label class="booking-form__radio-label" :for="'radioVisit' + input.id">{{ input.title }}</label>
           </div>
         </div>
 
       </div>
 
-      <div class="booking-form__section booking-form__section--reason" v-if="firstVisit">
+      <div class="booking-form__section booking-form__section--select" v-if="firstVisit !== null">
         <span class="booking-form__option-title">{{ this.fields.patient_motive_title }}</span>
         <CustomSelect
-            :title = this.fields.patient_motive_button
-            :options = this.fields.motives
+            :title = "this.fields.patient_motive_button"
+            :button-title = "this.fields.select_motive_title"
+            :options = "this.fields.motives"
+            :disabled = "this.firstVisit === null"
             name = "motive"
             v-model="this.selectedReason">
         </CustomSelect>
       </div>
 
-      <div class="booking-form__section booking-form__section--location">
+      <div class="booking-form__section booking-form__section--select">
         <span class="booking-form__option-title">{{ this.fields.chose_location_title }}</span>
         <CustomSelect
-            :title = this.fields.locations[0].title
-            :options = this.fields.locations
+            :title = "this.fields.chose_location_title"
+            :button-title="this.fields.locations[0].title"
+            :options = "this.fields.locations"
+            :disabled = "this.firstVisit === null && this.selectedReason.length === 0 "
             name = "location"
             v-model="this.selectedLocation">
         </CustomSelect>
@@ -47,11 +52,14 @@
           :next-available-date="nextAvailableDate"
           :meeting-duration="meetingDuration"
           @to-next-week="goToNextWeek"
+          @to-next-availabilities="goToNextAvailabilities"
+          @to-prev-availabilities="goToPrevAvailabilities"
       >
       </DateTable>
 
       <div class="booking-form__submit">
-        <button class="booking-form__button button button--primary">
+        <button type="submit"
+                class="booking-form__button button button--primary">
           <span>{{ this.fields.submit_button_text }}</span>
           <span class="button__icon button__icon--right-array"> +</span>
         </button>
@@ -147,12 +155,22 @@ export default {
       this.startDate = this.nextAvailableDate;
       this.nextAvailableDate = null;
     },
+
+    goToNextAvailabilities() {
+      let nextWeekStartDate = moment(this.startDate).startOf('day').toISOString();
+      console.debug("neeeext   " + nextWeekStartDate);
+    },
+
+    goToPrevAvailabilities(){
+      console.debug("preeev")
+    }
   },
 
   mounted() {
     if(this.firstVisit && this.selectedReason && this.selectedLocation) {
       this.getData();
     }
+    console.log("REASON____"+ this.selectedReason.length)
   },
 }
 
