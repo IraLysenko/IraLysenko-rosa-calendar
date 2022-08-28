@@ -55,6 +55,7 @@
           @to-next-week="goToNextWeek"
           @to-next-availabilities="goToNextAvailabilities"
           @to-prev-availabilities="goToPrevAvailabilities"
+          @send-day-data="sendDayData"
       >
       </DateTable>
 
@@ -185,6 +186,11 @@ export default {
 
     goToPrevAvailabilities(){
       console.debug("preeev");
+    },
+
+    sendDayData(dayData, selectedTime) {
+      this.fieldsData.selectedDate.date = dayData.weekday + ',' + dayData.number + ' ' + dayData.month + ', '+ dayData.year;
+      this.fieldsData.selectedDate.time = selectedTime;
     }
   },
 

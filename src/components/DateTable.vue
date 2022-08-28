@@ -43,6 +43,7 @@
                   type="radio"
                   name="time"
                   :id="day.dateFull+'_'+rowIndex"
+                  @change="$emit('send-day-data', day, day.hours[rowIndex])"
                   hidden >
           <label :for="day.dateFull+'_'+rowIndex">
             {{ day.hours[rowIndex] }}
@@ -91,7 +92,7 @@ import moment from "moment/moment";
 
 export default {
   name: "DateTable",
-  emits: ['toNextWeek', 'toNextAvailabilities', 'toPrevAvailabilities'],
+  emits: ['toNextWeek', 'toNextAvailabilities', 'toPrevAvailabilities', 'sendDayData'],
   props: {
     availabilities: Array,
     startDate: Object,
@@ -141,6 +142,7 @@ export default {
           weekday: calendarDate.format('ddd'),
           month: calendarDate.format('MMM'),
           number: calendarDate.format('D'),
+          year: calendarDate.format('Y'),
           hours: availableHoursArray,
           durationSum: durationsSum,
         }
@@ -160,9 +162,7 @@ export default {
     },
 
     dynamicRows() {
-      if (this.availabilities.length && this.showMoreRows === false) {
-        return this.timeRowsDefault;
-      } if (this.availabilities.length && this.showMoreRows === true) {
+      if (this.availabilities.length && this.showMoreRows === true) {
         return this.maxRows;
       } else {
         return this.timeRowsDefault;
@@ -174,6 +174,7 @@ export default {
     showMoreHours(){
       this.showMoreRows = true;
     },
+
   },
 }
 </script>
