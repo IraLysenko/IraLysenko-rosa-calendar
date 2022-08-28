@@ -30,7 +30,7 @@
       </th>
     </tr>
 
-    <tr class="date-picker__row" v-for="(rows, rowIndex) in timeRowsCalc" :key="rowIndex" >
+    <tr class="date-picker__row" v-for="(rows, rowIndex) in dynamicRows" :key="rowIndex" >
       <td class="date-picker__nav date-picker__nav--empty"></td>
 
       <td class="date-picker__cell date-picker__time"
@@ -45,7 +45,7 @@
                   :id="day.dateFull+'_'+rowIndex"
                   hidden >
           <label :for="day.dateFull+'_'+rowIndex">
-            {{ timeCounter(day.data, rowIndex) }}
+            {{ timeDefine(day.data, rowIndex) }}
           </label>
         </span>
 
@@ -80,7 +80,7 @@
         type="button"
         class="data-picker__show-more button button--show-more"
         @click="showMoreTime()"
-        v-if="timeRowsCalc < maxRows">
+        v-if="dynamicRows < maxRows">
       Show more availabilities
     </button>
   </div>
@@ -102,7 +102,7 @@ export default {
   },
   data() {
     return {
-      timeRowsCalc: this.timeRowsDefault,
+      showMoreRows: false,
     }
   },
   computed: {
@@ -121,8 +121,6 @@ export default {
               return availabilitiesDayDate === calendarDayDate;
             }) : {};
 
-        //console.debug(dayData);
-
         const dayObj = {
           dateFull: calendarDate.format('Y-MM-DD'),
           weekday: calendarDate.format('ddd'),
@@ -136,37 +134,46 @@ export default {
     },
 
     maxRows() {
-      if (!this.availabilities.length) {
-        return 0;
-      } else {
+      if(this.availabilities.length) {
         let durations = this.dataPickerArr.map( day => {
           return day.data.map(period => period.duration).reduce((x, y) => x + y, 0);
         });
         let maxDuration = Math.max(...durations);
         return Math.floor(maxDuration/this.meetingDuration);
+      } else {
+        return this.timeRowsDefault;
+      }
+    },
+
+    dynamicRows() {
+      if (this.availabilities.length && this.showMoreRows === false) {
+        return this.timeRowsDefault;
+      } if (this.availabilities.length && this.showMoreRows === true) {
+        return this.maxRows;
+      } else {
+        return this.timeRowsDefault;
       }
     }
   },
 
   methods: {
-    timeCounter: function (data, rowIndex) {
-      let availableHoursArray =
+    timeDefine: function (data, rowIndex) {
+      const availableHoursArray =
         data.map( partOfDay => {
         const rowsAmount = partOfDay.duration/ this.meetingDuration;
-        const arr = [];
+        const availableHoursOfPeriod = [];
         for (let i = 0; i < rowsAmount; i++) {
-          let minutesToAdd = i * this.meetingDuration;
-          let timeX = moment(partOfDay?.startAt).add(minutesToAdd, 'minutes').format('HH:mm');
-          console.debug(moment(partOfDay?.endAt));
-          arr.push(timeX);
+          const minutesToAdd = i * this.meetingDuration;
+          const timeX = moment(partOfDay?.startAt).add(minutesToAdd, 'minutes').format('HH:mm');
+          availableHoursOfPeriod.push(timeX);
         }
-        return arr;
+        return availableHoursOfPeriod;
       }).reduce(( arrX, arrY ) => [...arrX, ...arrY]);
       return availableHoursArray[rowIndex];
     },
 
     showMoreTime(){
-      this.timeRowsCalc = this.maxRows;
+      this.showMoreRows = true;
     },
   },
 }
