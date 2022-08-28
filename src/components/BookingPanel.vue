@@ -150,8 +150,8 @@ export default {
   },
   methods: {
     handleSubmit() {
-      alert(this.selectedTime);
-      console.log('submit');
+      alert(this.fieldsData.selectedDate.date + ' at ' + this.fieldsData.selectedDate.time);
+      console.log(this.fieldsData);
     },
 
     async getData() {
@@ -189,7 +189,7 @@ export default {
     },
 
     sendDayData(dayData, selectedTime) {
-      this.fieldsData.selectedDate.date = dayData.weekday + ',' + dayData.number + ' ' + dayData.month + ', '+ dayData.year;
+      this.fieldsData.selectedDate.date = dayData.weekday + ', ' + dayData.number + ' ' + dayData.month + ' '+ dayData.year;
       this.fieldsData.selectedDate.time = selectedTime;
     }
   },
