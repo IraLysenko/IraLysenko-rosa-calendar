@@ -105,8 +105,7 @@
   }
 
   &__no-availabilities {
-    position: absolute;
-    top: 50%;
-    left: 37%;
+    @include centeringAbsolute;
+    top: 65%;
   }
 }

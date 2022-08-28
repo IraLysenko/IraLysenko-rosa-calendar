@@ -169,7 +169,7 @@ export default {
         };
 
         const data = await (await axiosInstance.get('/availabilities/next', {params})).data;
-        this.nextAvailableDate = data.startAt;
+        this.nextAvailableDate = data?.startAt;
       }
     },
 

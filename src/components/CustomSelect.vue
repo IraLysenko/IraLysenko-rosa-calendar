@@ -61,7 +61,7 @@ export default {
     return {
       selectedData: '',
       dropDownOpen: false,
-      selectTitle: this.buttonTitle
+      selectTitle: 'this.buttonTitle'
     }
   },
   methods: {
