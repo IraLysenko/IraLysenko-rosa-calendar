@@ -30,22 +30,22 @@
       </th>
     </tr>
 
-    <tr class="date-picker__row" v-for="(rows, rowIndex) in dynamicRows" :key="rowIndex" >
+    <tr class="date-picker__row" v-for="(row, rowIndex) in dynamicRows" :key="rowIndex" >
       <td class="date-picker__nav date-picker__nav--empty"></td>
 
       <td class="date-picker__cell date-picker__time"
           v-for="(day, cellIndex) in this.dataPickerArr"
           :key="cellIndex"
-          :class="{'date-picker__time--empty' : !day.data.length }">
+          :class="{'date-picker__time--empty' : !day.hours.length }">
 
-        <span class="date-picker__time-span" v-if="day.data.length">
+        <span class="date-picker__time-span" v-if="day.hours.length">
           <input class="date-picker__input"
                   type="radio"
                   name="time"
                   :id="day.dateFull+'_'+rowIndex"
                   hidden >
           <label :for="day.dateFull+'_'+rowIndex">
-            {{ timeDefine(day.data, rowIndex) }}
+            {{ day.hours[rowIndex] }}
           </label>
         </span>
 
@@ -79,7 +79,7 @@
     <button
         type="button"
         class="data-picker__show-more button button--show-more"
-        @click="showMoreTime()"
+        @click="showMoreHours()"
         v-if="dynamicRows < maxRows">
       Show more availabilities
     </button>
@@ -121,12 +121,28 @@ export default {
               return availabilitiesDayDate === calendarDayDate;
             }) : {};
 
+        const availableHoursArray = availabilitiesDayData.length ?
+            availabilitiesDayData.map( partOfDay => {
+              const rowsAmount = partOfDay.duration/ this.meetingDuration;
+              const availableHoursOfPeriod = [];
+              for (let i = 0; i < rowsAmount; i++) {
+                const minutesToAdd = i * this.meetingDuration;
+                const timeX = moment(partOfDay?.startAt).add(minutesToAdd, 'minutes').format('HH:mm');
+                availableHoursOfPeriod.push(timeX);
+              }
+              return availableHoursOfPeriod;
+            }).reduce(( arrX, arrY ) => [...arrX, ...arrY], []) : [];
+
+        const durationsSum = availabilitiesDayData.length ?
+            availabilitiesDayData.map(period => period.duration).reduce((x, y) => x + y, 0) : [];
+
         const dayObj = {
           dateFull: calendarDate.format('Y-MM-DD'),
           weekday: calendarDate.format('ddd'),
           month: calendarDate.format('MMM'),
           number: calendarDate.format('D'),
-          data: availabilitiesDayData,
+          hours: availableHoursArray,
+          durationSum: durationsSum,
         }
         datePickerData.push(dayObj);
       }
@@ -135,10 +151,8 @@ export default {
 
     maxRows() {
       if(this.availabilities.length) {
-        let durations = this.dataPickerArr.map( day => {
-          return day.data.map(period => period.duration).reduce((x, y) => x + y, 0);
-        });
-        let maxDuration = Math.max(...durations);
+        const durations = this.dataPickerArr.map( day => day.durationSum);
+        const maxDuration = Math.max(...durations);
         return Math.floor(maxDuration/this.meetingDuration);
       } else {
         return this.timeRowsDefault;
@@ -157,22 +171,7 @@ export default {
   },
 
   methods: {
-    timeDefine: function (data, rowIndex) {
-      const availableHoursArray =
-        data.map( partOfDay => {
-        const rowsAmount = partOfDay.duration/ this.meetingDuration;
-        const availableHoursOfPeriod = [];
-        for (let i = 0; i < rowsAmount; i++) {
-          const minutesToAdd = i * this.meetingDuration;
-          const timeX = moment(partOfDay?.startAt).add(minutesToAdd, 'minutes').format('HH:mm');
-          availableHoursOfPeriod.push(timeX);
-        }
-        return availableHoursOfPeriod;
-      }).reduce(( arrX, arrY ) => [...arrX, ...arrY]);
-      return availableHoursArray[rowIndex];
-    },
-
-    showMoreTime(){
+    showMoreHours(){
       this.showMoreRows = true;
     },
   },

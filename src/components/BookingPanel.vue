@@ -135,7 +135,7 @@ export default {
       if(!this.selectedReason) {
         return '';
       } else {
-        let currentMotiveObj = this.fields.motives.find(motive => motive.id === this.selectedReason );
+        const currentMotiveObj = this.fields.motives.find(motive => motive.id === this.selectedReason );
         return currentMotiveObj.meeting_duration;
       }
     },
@@ -179,7 +179,7 @@ export default {
     },
 
     goToNextAvailabilities() {
-      let nextWeekStartDate = moment(this.startDate).startOf('day').toISOString();
+      const nextWeekStartDate = moment(this.startDate).startOf('day').toISOString();
       console.debug("neeeext   " + nextWeekStartDate);
     },
 
