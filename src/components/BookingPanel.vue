@@ -51,6 +51,7 @@
           :visible-days = "fields.data_picker_days_amount"
           :next-available-date="nextAvailableDate"
           :meeting-duration="meetingDuration"
+          :time-rows-default="fields.data_picker_rows_default"
           @to-next-week="goToNextWeek"
           @to-next-availabilities="goToNextAvailabilities"
           @to-prev-availabilities="goToPrevAvailabilities"
@@ -63,7 +64,6 @@
           <span>{{ this.fields.submit_button_text }}</span>
           <i class="button__icon button__icon--right-array fa fa-arrow-right"></i>
         </button>
-
       </div>
     </form>
   </div>
@@ -75,23 +75,12 @@ import DateTable from './DateTable.vue'
 import fields from '../../data/db.json'
 import moment from 'moment'
 import axiosInstance from "@/utils/http-client";
-/* import the fontawesome core */
-//import library  from '@fortawesome/fontawesome-svg-core'
-/* import font awesome icon component */
-//import  FontAwesomeIcon from '@fortawesome/vue-fontawesome'
-//import faChevronDown from '@fortawesome/free-solid-svg-icons'
-/* import specific icons */
-//import  faUserSecret  from '@fortawesome/free-solid-svg-icons'
-
 
 export default {
   name: "BookingPanel",
   components: {
     CustomSelect,
     DateTable,
-    //library,
-    //FontAwesomeIcon,
-    //faUserSecret
   },
   data() {
     return {
@@ -105,6 +94,27 @@ export default {
       nextAvailableDate : '',
       availableDate: '',
       selectedTime: null,
+      fieldsData: {
+        firstVisit: null,
+        selectedReason: {
+          id : '',
+          title: ''
+        },
+        selectedLocation: {
+          id : '',
+          title: ''
+        },
+        selectedDate: {
+          date : '',
+          time: ''
+        },
+      },
+      validation: {
+        firstVisit: false,
+        selectedReason: false,
+        selectedLocation: false,
+        selectedDate: false,
+      },
     }
   },
   computed: {
@@ -182,7 +192,6 @@ export default {
     if(this.firstVisit && this.selectedReason && this.selectedLocation) {
       this.getData();
     }
-    console.log("REASON____"+ this.selectedReason.length)
   },
 }
 
