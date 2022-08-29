@@ -124,9 +124,9 @@ export default {
     validationParams() {
       return ({
         firstVisit: this.selectedData.firstVisit !== null ,
-        selectedReason: this.selectedData.selectedReason ? true : false,
-        selectedLocation: this.selectedData.selectedLocation ? true : false,
-        selectedDate: this.selectedData.selectedLocation ? true : false,
+        selectedReason: !!this.selectedData.selectedReason,
+        selectedLocation: !!this.selectedData.selectedLocation,
+        selectedDate: !!this.selectedData.selectedLocation,
       });
     },
     datePickerAvailable() {
@@ -178,12 +178,13 @@ export default {
     },
 
     goToNextAvailabilities() {
-      const nextWeekStartDate = moment(this.startDate).startOf('day').toISOString();
-      console.debug("neeeext   " + nextWeekStartDate);
+      this.startDate = moment(this.startDate).add(fields.data_picker_days_amount, 'days');
     },
 
     goToPrevAvailabilities(){
-      console.debug("preeev");
+      if(this.startDate > moment()) {
+        this.startDate = moment(this.startDate).subtract(fields.data_picker_days_amount, 'days');
+      }
     },
 
     sendDayData(dayData, selectedTime) {

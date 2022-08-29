@@ -111,6 +111,15 @@
     &--empty {
       width: rem(56px);
     }
+
+    &-button {
+      cursor: pointer;
+
+      &:disabled {
+        cursor: not-allowed;
+        color: lightgray;
+      }
+    }
   }
 
   &__no-availabilities {

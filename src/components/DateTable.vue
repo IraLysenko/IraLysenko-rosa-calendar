@@ -4,8 +4,9 @@
     <tr class="date-picker__row date-picker__row--header">
       <th class="date-picker__nav date-picker__nav--left date-picker__cell date-picker__cell--nav">
         <button type="button"
-                class="button button--nav-left"
-                @click="$emit('to-prev-availabilities')">
+                class="button date-picker__nav-button date-picker__nav-button--right"
+                @click="$emit('to-prev-availabilities')"
+                :disabled="prevWeek === false">
           <span class="button__icon button__icon--left">
             <i class="fa-solid fa-angle-left"></i>
           </span>
@@ -22,7 +23,10 @@
       </th>
 
       <th class="date-picker__nav date-picker__nav--right">
-        <button type="button" @click="$emit('to-next-availabilities')">
+        <button type="button"
+                class="button date-picker__nav-button date-picker__nav-button--right"
+                @click="$emit('to-next-availabilities')"
+                :disabled="nextWeek === false">
           <span class="button__icon button__icon--left">
             <i class="fa-solid fa-angle-right"></i>
           </span>
@@ -167,6 +171,14 @@ export default {
       } else {
         return this.timeRowsDefault;
       }
+    },
+
+    prevWeek() {
+      return this.startDate > moment();
+    },
+
+    nextWeek() {
+      return this.availabilities.length > 0;
     }
   },
 
@@ -174,7 +186,6 @@ export default {
     showMoreHours(){
       this.showMoreRows = true;
     },
-
   },
 }
 </script>
