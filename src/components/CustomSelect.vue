@@ -17,7 +17,7 @@
                  :value="option.title"
                  type="radio"
                  :name="name"
-                 @change="passValue(option.id)"
+                 @change="passValue(option)"
                  v-model="selectTitle"
                  hidden>
           <label :for="option.id">
@@ -65,8 +65,8 @@ export default {
     }
   },
   methods: {
-    passValue(id) {
-      this.$emit('update:modelValue', id)
+    passValue(obj) {
+      this.$emit('update:modelValue', obj)
       this.showDropdown();
     },
     showDropdown() {

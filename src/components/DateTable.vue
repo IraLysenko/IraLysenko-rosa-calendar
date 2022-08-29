@@ -32,7 +32,6 @@
 
     <tr class="date-picker__row" v-for="(row, rowIndex) in dynamicRows" :key="rowIndex" >
       <td class="date-picker__nav date-picker__nav--empty"></td>
-
       <td class="date-picker__cell date-picker__time"
           v-for="(day, cellIndex) in this.dataPickerArr"
           :key="cellIndex"
@@ -49,11 +48,8 @@
             {{ day.hours[rowIndex] }}
           </label>
         </span>
-
         <span class="date-picker__time-empty" v-else></span>
-
       </td>
-
       <td class="date-picker__nav date-picker__nav--empty"></td>
     </tr>
 
@@ -99,7 +95,7 @@ export default {
     visibleDays: String,
     nextAvailableDate: String,
     meetingDuration: String,
-    timeRowsDefault: String
+    timeRowsDefault: Number
   },
   data() {
     return {
@@ -124,7 +120,7 @@ export default {
 
         const availableHoursArray = availabilitiesDayData.length ?
             availabilitiesDayData.map( partOfDay => {
-              const rowsAmount = partOfDay.duration/ this.meetingDuration;
+              const rowsAmount = partOfDay.duration/ this.meetingDuration;//10
               const availableHoursOfPeriod = [];
               for (let i = 0; i < rowsAmount; i++) {
                 const minutesToAdd = i * this.meetingDuration;
@@ -132,7 +128,7 @@ export default {
                 availableHoursOfPeriod.push(timeX);
               }
               return availableHoursOfPeriod;
-            }).reduce(( arrX, arrY ) => [...arrX, ...arrY], []) : [];
+            }).flat() : [];
 
         const durationsSum = availabilitiesDayData.length ?
             availabilitiesDayData.map(period => period.duration).reduce((x, y) => x + y, 0) : [];

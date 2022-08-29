@@ -13,7 +13,7 @@
                    :id="'radioVisit' + input.id"
                    name="radioVisit"
                    :value="input.is_new_patient"
-                   v-model="this.firstVisit"
+                   v-model="selectedData.firstVisit"
                    hidden>
             <label class="booking-form__radio-label" :for="'radioVisit' + input.id">{{ input.title }}</label>
           </div>
@@ -21,15 +21,15 @@
 
       </div>
 
-      <div class="booking-form__section booking-form__section--select" v-if="firstVisit !== null">
+      <div class="booking-form__section booking-form__section--select" v-if="selectedData.firstVisit !== null">
         <span class="booking-form__option-title">{{ this.fields.patient_motive_title }}</span>
         <CustomSelect
             :title = "this.fields.patient_motive_button"
             :button-title = "this.fields.select_motive_title"
             :options = "this.fields.motives"
-            :disabled = "this.firstVisit === null"
+            :disabled = "this.selectedData.firstVisit === null"
             name = "motive"
-            v-model="this.selectedReason">
+            v-model="selectedData.selectedReason">
         </CustomSelect>
       </div>
 
@@ -39,9 +39,9 @@
             :title = "this.fields.chose_location_title"
             :button-title="this.fields.locations[0].title"
             :options = "this.fields.locations"
-            :disabled = "this.firstVisit === null && this.selectedReason.length === 0 "
+            :disabled = "this.selectedData.firstVisit === null && this.selectedData.selectedReason.length === 0 "
             name = "location"
-            v-model="this.selectedLocation">
+            v-model="selectedData.selectedLocation">
         </CustomSelect>
       </div>
 
@@ -85,30 +85,16 @@ export default {
   },
   data() {
     return {
-      firstVisit: null,
-      selectedReason: '',
-      selectedLocation: '',
-      selectedDate: '',
       fields: fields,
       availabilities: [],
       startDate: moment(),
       nextAvailableDate : '',
       availableDate: '',
-      selectedTime: null,
-      fieldsData: {
+      selectedData: {
         firstVisit: null,
-        selectedReason: {
-          id : '',
-          title: ''
-        },
-        selectedLocation: {
-          id : '',
-          title: ''
-        },
-        selectedDate: {
-          date : '',
-          time: ''
-        },
+        selectedReason: '',
+        selectedLocation: '',
+        selectedDate: {},
       },
       validation: {
         firstVisit: false,
@@ -126,32 +112,32 @@ export default {
       return ({
         from: currentDate,
         to: endDate,
-        motive_id: vm.selectedReason,
-        is_new_patient: vm.firstVisit,
-        calendar_ids: vm.selectedLocation,
+        motive_id: vm.selectedData.selectedReason.id,
+        is_new_patient: vm.selectedData.firstVisit,
+        calendar_ids: vm.selectedData.selectedLocation.id,
       });
     },
 
     meetingDuration() {
-      if(!this.selectedReason) {
+      if(!this.selectedData.selectedReason) {
         return '';
       } else {
-        const currentMotiveObj = this.fields.motives.find(motive => motive.id === this.selectedReason );
+        const currentMotiveObj = this.fields.motives.find(motive => motive.id === this.selectedData.selectedReason.id );
         return currentMotiveObj.meeting_duration;
       }
     },
   },
   watch: {
     queryParams() {
-      if(this.firstVisit && this.selectedReason && this.selectedLocation){
+      if(this.selectedData.firstVisit && this.selectedData.selectedReason && this.selectedData.selectedLocation){
         this.getData();
       }
     },
   },
   methods: {
     handleSubmit() {
-      alert(this.fieldsData.selectedDate.date + ' at ' + this.fieldsData.selectedDate.time);
-      console.log(this.fieldsData);
+      alert(this.selectedData.selectedDate.date + ' at ' + this.selectedData.selectedDate.time);
+      console.log(this.selectedData);
     },
 
     async getData() {
@@ -189,13 +175,13 @@ export default {
     },
 
     sendDayData(dayData, selectedTime) {
-      this.fieldsData.selectedDate.date = dayData.weekday + ', ' + dayData.number + ' ' + dayData.month + ' '+ dayData.year;
-      this.fieldsData.selectedDate.time = selectedTime;
+      this.selectedData.selectedDate.date = dayData.weekday + ', ' + dayData.number + ' ' + dayData.month + ' '+ dayData.year;
+      this.selectedData.selectedDate.time = selectedTime;
     }
   },
 
   mounted() {
-    if(this.firstVisit && this.selectedReason && this.selectedLocation) {
+    if(this.selectedData.firstVisit && this.selectedData.selectedReason && this.selectedData.selectedLocation) {
       this.getData();
     }
   },
