@@ -6,9 +6,11 @@
   "chose_location_title" : "Select a location and an available time",
   "submit_button_text" : "Book Appointment",
   "select_motive_title" : "Select a motive",
-  "data_picker_days_amount" : "8",
+  "data_picker_days_amount" : 8,
+  "data_picker_days_desktop": 8,
+  "data_picker_days_mobile": 4,
   "data_picker_rows_default" : 3,
-  "error_message" : "This field is requires",
+  "error_message" : "This field is required",
 
   "visit": [
     {

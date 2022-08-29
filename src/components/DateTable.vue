@@ -34,31 +34,34 @@
       </th>
     </tr>
 
-    <tr class="date-picker__row" v-for="(row, rowIndex) in dynamicRows" :key="rowIndex" >
-      <td class="date-picker__nav date-picker__nav--empty"></td>
-      <td class="date-picker__cell date-picker__time"
-          v-for="(day, cellIndex) in this.dataPickerArr"
-          :key="cellIndex"
-          :class="{'date-picker__time--empty' : !day.hours.length }">
+    <tbody class="date-picker__body" :class="{'date-picker__body--invalid' : datePickerInvalid === true}">
+      <tr class="date-picker__row" v-for="(row, rowIndex) in dynamicRows" :key="rowIndex">
+        <td class="date-picker__nav date-picker__nav--empty"></td>
+        <td class="date-picker__cell date-picker__time"
+            v-for="(day, cellIndex) in this.dataPickerArr"
+            :key="cellIndex"
+            :class="{'date-picker__time--empty' : !day.hours.length }">
 
         <span class="date-picker__time-input" v-if="day.hours.length">
           <input class="date-picker__input"
-                  type="radio"
-                  name="time"
-                  :id="day.dateFull+'_'+rowIndex"
-                  @change="$emit('send-day-data', day, day.hours[rowIndex])"
-                  hidden >
+                 type="radio"
+                 name="time"
+                 :id="day.dateFull+'_'+rowIndex"
+                 @change="$emit('send-day-data', day, day.hours[rowIndex])"
+                 hidden>
           <label :for="day.dateFull+'_'+rowIndex">
             {{ day.hours[rowIndex] }}
           </label>
         </span>
 
-        <span class="date-picker__time-span date-picker__time-span--clean" v-else-if="datePickerAvailable === false"></span>
-        <span class="date-picker__time-span date-picker__time-span--no-time" v-else></span>
+          <span class="date-picker__time-span date-picker__time-span--clean"
+                v-else-if="datePickerAvailable === false"></span>
+          <span class="date-picker__time-span date-picker__time-span--no-time" v-else></span>
 
-      </td>
-      <td class="date-picker__nav date-picker__nav--empty"></td>
-    </tr>
+        </td>
+        <td class="date-picker__nav date-picker__nav--empty"></td>
+      </tr>
+    </tbody>
 
     <button
         type="button"
@@ -99,24 +102,35 @@ export default {
   props: {
     availabilities: Array,
     startDate: Object,
-    visibleDays: String,
+    visibleDaysDesktop: Number,
+    visibleDaysMobile: Number,
     nextAvailableDate: String,
     meetingDuration: String,
     timeRowsDefault: Number,
-    datePickerAvailable: Boolean
+    datePickerAvailable: Boolean,
+    datePickerInvalid: Boolean,
   },
   data() {
     return {
       showMoreRows: false,
+      mobileMode: false,
     }
   },
   computed: {
+    daysToShowCalc() {
+      if(this.mobileMode === false) {
+        return this.visibleDaysDesktop;
+      } else {
+        return this.visibleDaysMobile;
+      }
+    },
+
     formattedNextAvailableDate: vm => vm.nextAvailableDate && moment(vm.nextAvailableDate).format('MMM DD'),
 
     dataPickerArr: function () {
       const datePickerData = [];
       const currentDate = moment(this.startDate);
-      const endDate = moment(currentDate).add(7, 'days');
+      const endDate = moment(currentDate).add(this.daysToShowCalc - 1 , 'days');
 
       for (let calendarDate = currentDate; calendarDate <= endDate; calendarDate.add(1, 'days')) {
         const availabilitiesDayData = this.availabilities.length ?
@@ -186,6 +200,15 @@ export default {
     showMoreHours(){
       this.showMoreRows = true;
     },
+    mobileModeDefining() {
+      if(screen.width <= 768) {
+        this.mobileMode = true
+      }
+    },
   },
+
+  mounted() {
+    this.mobileModeDefining()
+  }
 }
 </script>

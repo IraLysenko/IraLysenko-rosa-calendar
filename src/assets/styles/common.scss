@@ -48,3 +48,11 @@ h2 {
   letter-spacing: .02rem;
   font-weight: 500;
 }
+
+.error-message {
+  &--text {
+    color: red;
+    font-size: rem(16px);
+    padding-top: rem(15px);
+  }
+}

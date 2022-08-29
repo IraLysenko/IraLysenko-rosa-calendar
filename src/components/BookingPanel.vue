@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../assets/styles/common.scss">
 <template>
   <div class="booking-panel">
     <h2 class="booking-panel__title">{{ this.fields.booking_panel_title }}</h2>
@@ -15,10 +16,13 @@
                    :value="input.is_new_patient"
                    v-model="selectedData.firstVisit"
                    hidden>
-            <label class="booking-form__radio-label" :for="'radioVisit' + input.id">{{ input.title }}</label>
+            <label class="booking-form__radio-label"
+                   :class="{'booking-form__radio-label--invalid' : validData.firstVisit === false && selectedData.firstVisit === null }"
+                   :for="'radioVisit' + input.id">
+              {{ input.title }}
+            </label>
           </div>
         </div>
-
       </div>
 
       <div class="booking-form__section booking-form__section--select" v-if="selectedData.firstVisit !== null">
@@ -29,35 +33,40 @@
             :options = "this.fields.motives"
             :disabled = "this.selectedData.firstVisit === null"
             name = "motive"
-            v-model="selectedData.selectedReason">
+            v-model = "selectedData.selectedReason">
         </CustomSelect>
+        <span class="error-message error-message--text"
+              v-if = "validData.selectedReason === false && !selectedData.selectedReason">
+          {{ this.fields.error_message}}
+        </span>
       </div>
 
       <div class="booking-form__section booking-form__section--select">
         <span class="booking-form__option-title">{{ this.fields.chose_location_title }}</span>
         <CustomSelect
-            :title = "this.fields.chose_location_title"
             :button-title="this.fields.locations[0].title"
             :options = "this.fields.locations"
-            :disabled = "this.selectedData.firstVisit === null && this.selectedData.selectedReason.length === 0 "
+            :disabled = "!(this.selectedData.firstVisit !== null && !this.selectedData.selectedReason.length )"
             name = "location"
-            v-model="selectedData.selectedLocation">
+            v-model = "selectedData.selectedLocation">
         </CustomSelect>
       </div>
 
       <DateTable
           :availabilities = "availabilities"
           :start-date = "startDate"
-          :visible-days = "fields.data_picker_days_amount"
-          :next-available-date="nextAvailableDate"
-          :meeting-duration="meetingDuration"
-          :time-rows-default="fields.data_picker_rows_default"
-          :date-picker-available="datePickerAvailable"
-          @to-next-week="goToNextWeek"
-          @to-next-availabilities="goToNextAvailabilities"
-          @to-prev-availabilities="goToPrevAvailabilities"
-          @send-day-data="sendDayData"
-      >
+          :visible-days = "fields.data_picker_days_desktop"
+          :visible-days-desktop = "fields.data_picker_days_desktop"
+          :visible-days-mobile = "fields.data_picker_days_mobile"
+          :next-available-date = "nextAvailableDate"
+          :meeting-duration = "meetingDuration"
+          :time-rows-default = "fields.data_picker_rows_default"
+          :date-picker-available = "datePickerAvailable"
+          :date-picker-invalid = "validData.selectedDate === false && !selectedData.selectedDate.length"
+          @to-next-week = "goToNextWeek"
+          @to-next-availabilities = "goToNextAvailabilities"
+          @to-prev-availabilities = "goToPrevAvailabilities"
+          @send-day-data = "sendDayData" >
       </DateTable>
 
       <div class="booking-form__submit">
@@ -94,15 +103,16 @@ export default {
       selectedData: {
         firstVisit: null,
         selectedReason: '',
-        selectedLocation: '',
+        selectedLocation: fields.locations[0],
         selectedDate: {},
       },
+      validData: {},
     }
   },
   computed: {
     queryParams: vm => {
       const currentDate = moment(vm.startDate).startOf('day').toISOString();
-      const endDate = moment(currentDate).add(fields.data_picker_days_amount, 'days').endOf('day').toISOString();
+      const endDate = moment(currentDate).add(fields.data_picker_days_desktop, 'days').endOf('day').toISOString();
 
       return ({
         from: currentDate,
@@ -126,29 +136,27 @@ export default {
         firstVisit: this.selectedData.firstVisit !== null ,
         selectedReason: !!this.selectedData.selectedReason,
         selectedLocation: !!this.selectedData.selectedLocation,
-        selectedDate: !!this.selectedData.selectedLocation,
+        selectedDate: !!Object.keys(this.selectedData.selectedDate).length,
       });
     },
     datePickerAvailable() {
-      if(this.validationParams.firstVisit !== null
-        && this.validationParams.selectedReason === true
-        && this.validationParams.selectedLocation) {
-        return true
-      } else {
-        return false
-      }
+      return this.validationParams.firstVisit !== null
+          && this.validationParams.selectedReason === true;
     },
   },
   watch: {
     queryParams() {
-      if(this.selectedData.firstVisit && this.selectedData.selectedReason && this.selectedData.selectedLocation){
+      if(this.selectedData.firstVisit && this.selectedData.selectedReason){
         this.getData();
       }
     },
   },
   methods: {
     handleSubmit() {
-      alert(this.selectedData.selectedDate.date + ' at ' + this.selectedData.selectedDate.time);
+      this.validData = this.validationParams;
+      if(Object.values(this.validData).every(value => value === true)) {
+        alert('Your meeting date: ' + this.selectedData.selectedDate.date + ' at ' + this.selectedData.selectedDate.time);
+      }
       console.log(this.selectedData);
     },
 
@@ -178,12 +186,12 @@ export default {
     },
 
     goToNextAvailabilities() {
-      this.startDate = moment(this.startDate).add(fields.data_picker_days_amount, 'days');
+      this.startDate = moment(this.startDate).add(fields.data_picker_days_desktop, 'days');
     },
 
     goToPrevAvailabilities(){
       if(this.startDate > moment()) {
-        this.startDate = moment(this.startDate).subtract(fields.data_picker_days_amount, 'days');
+        this.startDate = moment(this.startDate).subtract(fields.data_picker_days_desktop, 'days');
       }
     },
 

@@ -2,6 +2,13 @@
   width: 100%;
   position: relative;
 
+  &__body {
+    &--invalid {
+      border: 1px solid red;
+      display: block;
+    }
+  }
+
   &__row {
     display: flex;
     height: rem(40.5px);
@@ -22,8 +29,12 @@
     @include centering;
 
     flex-direction: column;
-    min-width: 10%;
+    min-width: 15%;
     height: 100%;
+
+    @include media-breakpoint-up(lg) {
+      min-width: 10%;
+    }
   }
 
   &__day {
@@ -40,14 +51,13 @@
   &__time {
     padding: rem(4px);
     font-size: rem(12px);
-    
+
     &-input {
       background: #f3effb;
       border: 1px solid transparent;
       color: #371c69;
       border-radius: rem(4px);
       cursor: pointer;
-      //padding: rem(5px);
       width: 100%;
       height: 100%;
       @include centering;
@@ -101,15 +111,15 @@
 
   &__nav {
     @include centering;
-    min-width: 10%;
+    min-width: 5%;
+
+    @include media-breakpoint-up(lg) {
+      min-width: 10%;
+    }
 
     & .arrow-icon {
       width: 100%;
       height: inherit;
-    }
-
-    &--empty {
-      width: rem(56px);
     }
 
     &-button {

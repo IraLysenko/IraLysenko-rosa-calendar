@@ -3,13 +3,14 @@
           class="booking-form__select-button custom-select"
           :class="{'custom-select--disabled' : disabled === true }"
           @click.self="showDropdown()"
-          :disabled="disabled === true">
-    {{ selectTitle }}
+          :disabled="disabled === true"
+          ref="customSelect">
+    {{ selectTitle ? selectTitle : buttonTitle }}
 
     <transition name="fade">
       <div class="booking-form__select-dropdown custom-select__dropdown"
            :class="{'custom-select__dropdown--hidden' : !dropDownOpen}"
-           v-if="dropDownOpen">
+           v-if="this.dropDownOpen === true">
         <div class="custom-select__option-wrap"
              v-for="(option, index) in options" :key="index">
           <input class="custom-select__option"
@@ -34,10 +35,7 @@
 export default {
   name: "CustomSelect",
   props: {
-    title: {
-      type: String,
-      required: true,
-    },
+    title: String,
     options: {
       type: Object,
       required: true,
@@ -46,32 +44,36 @@ export default {
       type: String,
       required: true
     },
-    modelValue: {
-      type: String
-    },
-    disabled: {
-      type: Boolean,
-    },
-    buttonTitle: {
-      type: String
-    }
+    modelValue: String,
+    disabled: Boolean,
+    buttonTitle:String
   },
   emits: ['update:modelValue'],
   data() {
     return {
       selectedData: '',
       dropDownOpen: false,
-      selectTitle: 'this.buttonTitle'
+      selectTitle: ''
     }
   },
   methods: {
     passValue(obj) {
-      this.$emit('update:modelValue', obj)
-      this.showDropdown();
+      this.$emit('update:modelValue', obj);
     },
     showDropdown() {
-        this.dropDownOpen = !this.dropDownOpen;
+      this.dropDownOpen = !this.dropDownOpen;
     },
+    clickOutside() {
+      document.addEventListener("click", (e) => {
+        let customSelectButton = this.$refs.customSelect;
+        if (e.target !== customSelectButton && this.dropDownOpen === true) {
+          this.dropDownOpen = false;
+        }
+      })
+    }
   },
+  mounted() {
+    this.clickOutside();
+  }
 }
 </script>
