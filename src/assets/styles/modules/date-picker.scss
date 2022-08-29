@@ -41,7 +41,7 @@
     padding: rem(4px);
     font-size: rem(12px);
     
-    &-span {
+    &-input {
       background: #f3effb;
       border: 1px solid transparent;
       color: #371c69;
@@ -58,10 +58,19 @@
       }
     }
 
-    &-empty {
-      height: 1px;
-      width: 16px;
-      background: #bd969e;
+    &-span {
+      &--clean {
+        height: 100%;
+        width: 100%;
+        background-color: #f2eded;
+        border-radius: rem(4px);
+      }
+
+      &--no-time{
+        height: 1px;
+        width: 16px;
+        background-color: #bd969e;
+      }
     }
   }
   

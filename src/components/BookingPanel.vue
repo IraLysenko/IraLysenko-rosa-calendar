@@ -52,6 +52,7 @@
           :next-available-date="nextAvailableDate"
           :meeting-duration="meetingDuration"
           :time-rows-default="fields.data_picker_rows_default"
+          :date-picker-available="datePickerAvailable"
           @to-next-week="goToNextWeek"
           @to-next-availabilities="goToNextAvailabilities"
           @to-prev-availabilities="goToPrevAvailabilities"
@@ -96,12 +97,6 @@ export default {
         selectedLocation: '',
         selectedDate: {},
       },
-      validation: {
-        firstVisit: false,
-        selectedReason: false,
-        selectedLocation: false,
-        selectedDate: false,
-      },
     }
   },
   computed: {
@@ -124,6 +119,23 @@ export default {
       } else {
         const currentMotiveObj = this.fields.motives.find(motive => motive.id === this.selectedData.selectedReason.id );
         return currentMotiveObj.meeting_duration;
+      }
+    },
+    validationParams() {
+      return ({
+        firstVisit: this.selectedData.firstVisit !== null ,
+        selectedReason: this.selectedData.selectedReason ? true : false,
+        selectedLocation: this.selectedData.selectedLocation ? true : false,
+        selectedDate: this.selectedData.selectedLocation ? true : false,
+      });
+    },
+    datePickerAvailable() {
+      if(this.validationParams.firstVisit !== null
+        && this.validationParams.selectedReason === true
+        && this.validationParams.selectedLocation) {
+        return true
+      } else {
+        return false
       }
     },
   },

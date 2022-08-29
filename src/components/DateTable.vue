@@ -37,7 +37,7 @@
           :key="cellIndex"
           :class="{'date-picker__time--empty' : !day.hours.length }">
 
-        <span class="date-picker__time-span" v-if="day.hours.length">
+        <span class="date-picker__time-input" v-if="day.hours.length">
           <input class="date-picker__input"
                   type="radio"
                   name="time"
@@ -48,7 +48,10 @@
             {{ day.hours[rowIndex] }}
           </label>
         </span>
-        <span class="date-picker__time-empty" v-else></span>
+
+        <span class="date-picker__time-span date-picker__time-span--clean" v-else-if="datePickerAvailable === false"></span>
+        <span class="date-picker__time-span date-picker__time-span--no-time" v-else></span>
+
       </td>
       <td class="date-picker__nav date-picker__nav--empty"></td>
     </tr>
@@ -65,7 +68,7 @@
     <button
         type="button"
         class="date-picker__no-availabilities button button--no-availabilities"
-        v-if="!availabilities.length && !nextAvailableDate"
+        v-if="datePickerAvailable === true && !availabilities.length && !nextAvailableDate"
         disabled >
       <i class="button--no-availabilities__icon fa fa-calendar-times"></i>
       <span>These dates are not available for booking</span>
@@ -95,7 +98,8 @@ export default {
     visibleDays: String,
     nextAvailableDate: String,
     meetingDuration: String,
-    timeRowsDefault: Number
+    timeRowsDefault: Number,
+    datePickerAvailable: Boolean
   },
   data() {
     return {
