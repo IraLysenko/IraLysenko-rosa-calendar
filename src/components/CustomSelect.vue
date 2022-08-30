@@ -29,7 +29,6 @@
       </div>
     </transition>
   </button>
-
 </template>
 
 <script>

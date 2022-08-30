@@ -149,9 +149,9 @@ export default {
         return 5 ;
       } if(this.windowWidth <= 992) {
         return 10;
-      }if(this.windowWidth <= 1024) {
+      }if (this.windowWidth <= 1024) {
         return 4;
-      } if(this.windowWidth <= 1440) {
+      } if (this.windowWidth <= 1440) {
         return 5;
       } else {
         return 8;

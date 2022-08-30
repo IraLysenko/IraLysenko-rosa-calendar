@@ -1,5 +1,4 @@
 <template>
-
   <table class="booking-form__date-picker date-picker"
          :data-columns="columns">
     <tr class="date-picker__row date-picker__row--header">
@@ -13,7 +12,6 @@
           </span>
         </button>
       </th>
-
       <th class="date-picker__cell date-picker__cell--heading"
           v-for="(day, index) in this.dataPickerArr" :key="index">
         <div class="date-picker__day">{{ day.weekday }}</div>
@@ -22,7 +20,6 @@
           <span class="date-picker__date">{{day.number}}</span>
         </div>
       </th>
-
       <th class="date-picker__nav date-picker__nav--right">
         <button type="button"
                 class="button date-picker__nav-button date-picker__nav-button--right"
@@ -54,11 +51,9 @@
             {{ day.hours[rowIndex] }}
           </label>
         </span>
-
           <span class="date-picker__time-span date-picker__time-span--clean"
                 v-else-if="datePickerAvailable === false"></span>
           <span class="date-picker__time-span date-picker__time-span--no-time" v-else></span>
-
         </td>
         <td class="date-picker__nav date-picker__nav--empty"></td>
       </tr>
