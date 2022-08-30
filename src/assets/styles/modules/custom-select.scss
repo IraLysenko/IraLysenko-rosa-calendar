@@ -7,6 +7,9 @@
   transition: $transition;
   position: relative;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
 
   &:hover {
     border-color: #e3dfde;

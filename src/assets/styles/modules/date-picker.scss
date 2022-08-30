@@ -1,6 +1,31 @@
 .date-picker {
   width: 100%;
   position: relative;
+  $self: &;
+
+  &[data-columns="4"]{
+    #{$self}__cell, #{$self}__nav {
+      width: calc(100% / (4 + 2));
+    }
+  }
+
+  &[data-columns="5"]{
+    #{$self}__cell, #{$self}__nav {
+      width: calc(100% / (5 + 2));
+    }
+  }
+
+  &[data-columns="10"]{
+    #{$self}__cell, #{$self}__nav {
+      width: calc(100% / (10 + 2));
+    }
+  }
+
+  &[data-columns="8"]{
+    #{$self}__cell, #{$self}__nav{
+      width: calc(100% / (8 + 2));
+    }
+  }
 
   &__body {
     &--invalid {
@@ -29,12 +54,7 @@
     @include centering;
 
     flex-direction: column;
-    min-width: 15%;
     height: 100%;
-
-    @include media-breakpoint-up(lg) {
-      min-width: 10%;
-    }
   }
 
   &__day {
@@ -111,11 +131,6 @@
 
   &__nav {
     @include centering;
-    min-width: 5%;
-
-    @include media-breakpoint-up(lg) {
-      min-width: 10%;
-    }
 
     & .arrow-icon {
       width: 100%;

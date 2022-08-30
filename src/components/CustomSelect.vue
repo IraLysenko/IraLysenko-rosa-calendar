@@ -6,6 +6,7 @@
           :disabled="disabled === true"
           ref="customSelect">
     {{ selectTitle ? selectTitle : buttonTitle }}
+    <i class="custom-select__icon fas fa-angle-down"></i>
 
     <transition name="fade">
       <div class="booking-form__select-dropdown custom-select__dropdown"
@@ -22,7 +23,7 @@
                  v-model="selectTitle"
                  hidden>
           <label :for="option.id">
-            {{ option.title }}
+            {{ option.title }}            
           </label>
         </div>
       </div>

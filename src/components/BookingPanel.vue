@@ -55,9 +55,7 @@
       <DateTable
           :availabilities = "availabilities"
           :start-date = "startDate"
-          :visible-days = "fields.data_picker_days_desktop"
-          :visible-days-desktop = "fields.data_picker_days_desktop"
-          :visible-days-mobile = "fields.data_picker_days_mobile"
+          :columns = "this.columnsResponsive"
           :next-available-date = "nextAvailableDate"
           :meeting-duration = "meetingDuration"
           :time-rows-default = "fields.data_picker_rows_default"
@@ -107,12 +105,13 @@ export default {
         selectedDate: {},
       },
       validData: {},
+      windowWidth: '',
     }
   },
   computed: {
     queryParams: vm => {
       const currentDate = moment(vm.startDate).startOf('day').toISOString();
-      const endDate = moment(currentDate).add(fields.data_picker_days_desktop, 'days').endOf('day').toISOString();
+      const endDate = moment(currentDate).add(vm.columnsResponsive, 'days').endOf('day').toISOString();
 
       return ({
         from: currentDate,
@@ -143,6 +142,21 @@ export default {
       return this.validationParams.firstVisit !== null
           && this.validationParams.selectedReason === true;
     },
+    columnsResponsive() {
+      if (this.windowWidth <= 425) {
+        return 4 ;
+      } if (this.windowWidth <= 768) {
+        return 5 ;
+      } if(this.windowWidth <= 992) {
+        return 10;
+      }if(this.windowWidth <= 1024) {
+        return 4;
+      } if(this.windowWidth <= 1440) {
+        return 5;
+      } else {
+        return 8;
+      }
+    }
   },
   watch: {
     queryParams() {
@@ -152,6 +166,16 @@ export default {
     },
   },
   methods: {
+    windowSizeDefine() {
+      this.windowWidth = window.innerWidth;
+    },
+
+    windowSizeListener() {
+      addEventListener('resize', () => {
+        this.windowSizeDefine();
+      });
+    },
+
     handleSubmit() {
       this.validData = this.validationParams;
       if(Object.values(this.validData).every(value => value === true)) {
@@ -186,12 +210,12 @@ export default {
     },
 
     goToNextAvailabilities() {
-      this.startDate = moment(this.startDate).add(fields.data_picker_days_desktop, 'days');
+      this.startDate = moment(this.startDate).add(this.columnsResponsive, 'days');
     },
 
     goToPrevAvailabilities(){
       if(this.startDate > moment()) {
-        this.startDate = moment(this.startDate).subtract(fields.data_picker_days_desktop, 'days');
+        this.startDate = moment(this.startDate).subtract(this.columnsResponsive, 'days');
       }
     },
 
@@ -202,9 +226,11 @@ export default {
   },
 
   mounted() {
-    if(this.selectedData.firstVisit && this.selectedData.selectedReason && this.selectedData.selectedLocation) {
+    if(this.selectedData.firstVisit && this.selectedData.selectedReason) {
       this.getData();
     }
+    this.windowSizeDefine();
+    this.windowSizeListener();
   },
 }
 

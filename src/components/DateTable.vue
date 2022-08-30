@@ -1,6 +1,7 @@
 <template>
 
-  <table class="booking-form__date-picker date-picker" >
+  <table class="booking-form__date-picker date-picker"
+         :data-columns="columns">
     <tr class="date-picker__row date-picker__row--header">
       <th class="date-picker__nav date-picker__nav--left date-picker__cell date-picker__cell--nav">
         <button type="button"
@@ -102,13 +103,12 @@ export default {
   props: {
     availabilities: Array,
     startDate: Object,
-    visibleDaysDesktop: Number,
-    visibleDaysMobile: Number,
     nextAvailableDate: String,
     meetingDuration: String,
     timeRowsDefault: Number,
     datePickerAvailable: Boolean,
     datePickerInvalid: Boolean,
+    columns: Number,
   },
   data() {
     return {
@@ -117,20 +117,11 @@ export default {
     }
   },
   computed: {
-    daysToShowCalc() {
-      if(this.mobileMode === false) {
-        return this.visibleDaysDesktop;
-      } else {
-        return this.visibleDaysMobile;
-      }
-    },
-
     formattedNextAvailableDate: vm => vm.nextAvailableDate && moment(vm.nextAvailableDate).format('MMM DD'),
-
     dataPickerArr: function () {
       const datePickerData = [];
       const currentDate = moment(this.startDate);
-      const endDate = moment(currentDate).add(this.daysToShowCalc - 1 , 'days');
+      const endDate = moment(currentDate).add(this.columns - 1 , 'days');
 
       for (let calendarDate = currentDate; calendarDate <= endDate; calendarDate.add(1, 'days')) {
         const availabilitiesDayData = this.availabilities.length ?
@@ -200,15 +191,6 @@ export default {
     showMoreHours(){
       this.showMoreRows = true;
     },
-    mobileModeDefining() {
-      if(screen.width <= 768) {
-        this.mobileMode = true
-      }
-    },
   },
-
-  mounted() {
-    this.mobileModeDefining()
-  }
 }
 </script>
