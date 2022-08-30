@@ -1,4 +1,4 @@
-# rosa
+# rosa - technical exercise
 
 ## Project setup
 ```
