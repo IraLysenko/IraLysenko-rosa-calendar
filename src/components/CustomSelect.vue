@@ -10,7 +10,6 @@
 
     <transition name="fade">
       <div class="booking-form__select-dropdown custom-select__dropdown"
-           :class="{'custom-select__dropdown--hidden' : !dropDownOpen}"
            v-if="this.dropDownOpen === true">
         <div class="custom-select__option-wrap"
              v-for="(option, index) in options" :key="index">

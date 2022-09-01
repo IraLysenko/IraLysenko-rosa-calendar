@@ -108,7 +108,6 @@ export default {
   data() {
     return {
       showMoreRows: false,
-      mobileMode: false,
     }
   },
   computed: {

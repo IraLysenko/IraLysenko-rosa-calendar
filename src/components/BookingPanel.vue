@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="../assets/styles/common.scss">
 <template>
   <div class="booking-panel">
     <h2 class="booking-panel__title">{{ this.fields.booking_panel_title }}</h2>
@@ -71,7 +70,7 @@
         <button type="submit"
                 class="booking-form__button button button--primary">
           <span>{{ this.fields.submit_button_text }}</span>
-          <i class="button__icon button__icon--right-array fa fa-arrow-right"></i>
+          <i class="button__icon button__icon--right-arrow fa fa-arrow-right"></i>
         </button>
       </div>
     </form>

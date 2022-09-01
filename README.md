@@ -1,4 +1,4 @@
-# rosa - technical exercise
+# rosa - technical assessment
 
 ## Project setup
 ```
